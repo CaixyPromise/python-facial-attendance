@@ -1,0 +1,1 @@
+# face_recognizer.py: 包含FaceRecognizer类，用于从给定的图像中识别人脸。

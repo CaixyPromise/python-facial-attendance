@@ -1,0 +1,1 @@
+# face_register.py: 包含FaceRegister类，用于人脸特征的捕获和存储
