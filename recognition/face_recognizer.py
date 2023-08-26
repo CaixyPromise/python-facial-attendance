@@ -2,8 +2,8 @@ import time
 import dlib
 import cv2
 import numpy as np
-from face_recognition.utils.putChineseText import cv2AddChineseText
-from face_recognition.db.DatabaseHandler import DatabaseHandler
+from utils.putChineseText import cv2AddChineseText
+from db.DatabaseHandler import DatabaseHandler
 
 class FaceRecognizer:
     def __init__(self, detector, threshold = 0.5, resize_w = 700, resize_h = 400):
@@ -20,6 +20,9 @@ class FaceRecognizer:
 
         # 加载人脸特征值
         self.feature_list, self.label_list, self.name_list = self.get_feature_list(self.db)
+        if (self.feature_list is None):
+            print('没有注册的人脸特征, 请先注册人脸特征.')
+            exit(-1)
 
     def get_feature_list(self, db):
         # 从CSV文件中加载已注册的人脸特征
@@ -42,7 +45,7 @@ class FaceRecognizer:
                 feature_list = face_descriptor  # 将当前的特征描述符设置为特征列表
             else:  # 否则
                 feature_list = np.concatenate((feature_list, face_descriptor), axis = 0)  # 在现有的特征列表上追加特征描述符
-        print("特征加载完毕")
+        print('加载注册的人脸特征完成')
         return feature_list, label_list, name_list  # 返回特征列表、标签列表和名称列表
 
     def recognize(self, frame):
@@ -54,7 +57,6 @@ class FaceRecognizer:
         person_detect = 0  # 初始化检测到的人数为0
         face_count = 0  # 初始化人脸计数为0
         show_time = (frameTime - 10)  # 设置显示时间
-
 
         # 检测人脸
         face_detections = self.detector.detect_faces(frame)
@@ -73,6 +75,7 @@ class FaceRecognizer:
             face_descriptor = np.asarray(face_descriptor, dtype = np.float64)
 
             # 计算欧式距离并找到最接近的匹配
+            print(self.feature_list)
             distance = np.linalg.norm((face_descriptor - self.feature_list), axis = 1)
             min_index = np.argmin(distance)
             min_distance = distance[min_index]

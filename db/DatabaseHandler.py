@@ -1,5 +1,5 @@
 import sqlite3
-from face_recognition.utils.singleton import Singleton
+from utils.singleton import Singleton
 
 @Singleton
 class DatabaseHandler:

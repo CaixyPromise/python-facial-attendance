@@ -1,7 +1,7 @@
 import cv2
-from face_recognition.recognition.face_recognizer import FaceRecognizer
-from face_recognition.registration.face_register import FaceRegister
-from face_recognition.detectors.face_detector import FaceDetector
+from recognition.face_recognizer import FaceRecognizer
+from registration.face_register import FaceRegister
+from detectors.face_detector import FaceDetector
 
 class FaceAttendanceSystem:
     mode : str
@@ -49,14 +49,16 @@ class FaceAttendanceSystem:
 
 
     def run(self, video_src = 0):
-        if self.mode == 'reg':
+        if self.mode == 'reg':  # 注册人脸
             self.register.register()
-        elif self.mode == 'recog':
+        elif self.mode == 'recog': # 识别人脸
             self.recognition(video_src)
         else:
             raise ValueError("Invalid mode")
 
 # 创建系统实例并运行
-system = FaceAttendanceSystem(mode='recog', detector='haar', faceId=1, userName='John')
-system.run()
+# 先注册，后运行，否则系统会停止
+if __name__ == '__main__':
+    system = FaceAttendanceSystem(mode='recog', detector='haar', faceId=1, userName='John')
+    system.run()
 

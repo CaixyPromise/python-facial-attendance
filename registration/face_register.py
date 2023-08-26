@@ -1,8 +1,8 @@
 import dlib
 import cv2
 import time
-from face_recognition.utils.putChineseText import cv2AddChineseText
-from face_recognition.db.DatabaseHandler import DatabaseHandler
+from utils.putChineseText import cv2AddChineseText
+from db.DatabaseHandler import DatabaseHandler
 import csv
 class FaceRegister:
     def __init__(self, detector, faceId = 1, userName = 'default', interval = 3, faceCount = 3, resize_w = 700,
