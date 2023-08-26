@@ -1,7 +1,6 @@
 import time
 import dlib
 import cv2
-import csv
 import numpy as np
 from face_recognition.utils.putChineseText import cv2AddChineseText
 from face_recognition.db.DatabaseHandler import DatabaseHandler
@@ -17,6 +16,10 @@ class FaceRecognizer:
             )  # 加载人脸特征描述符提取器
         self.resize_w = resize_w  # 设置画面缩放宽度
         self.resize_h = resize_h  # 设置画面缩放高度
+        self.db = DatabaseHandler()
+
+        # 加载人脸特征值
+        self.feature_list, self.label_list, self.name_list = self.get_feature_list(self.db)
 
     def get_feature_list(self, db):
         # 从CSV文件中加载已注册的人脸特征
@@ -51,10 +54,7 @@ class FaceRecognizer:
         person_detect = 0  # 初始化检测到的人数为0
         face_count = 0  # 初始化人脸计数为0
         show_time = (frameTime - 10)  # 设置显示时间
-        db = DatabaseHandler()
 
-        # 加载人脸特征值
-        feature_list, label_list, name_list = self.get_feature_list(db)
 
         # 检测人脸
         face_detections = self.detector.detect_faces(frame)
@@ -73,14 +73,14 @@ class FaceRecognizer:
             face_descriptor = np.asarray(face_descriptor, dtype = np.float64)
 
             # 计算欧式距离并找到最接近的匹配
-            distance = np.linalg.norm((face_descriptor - feature_list), axis = 1)
+            distance = np.linalg.norm((face_descriptor - self.feature_list), axis = 1)
             min_index = np.argmin(distance)
             min_distance = distance[min_index]
 
             predict_name = "Not recog"
             if min_distance < self.threshold:
-                predict_id = label_list[min_index]
-                predict_name = name_list[min_index]
+                predict_id = self.label_list[min_index]
+                predict_name = self.name_list[min_index]
 
                 # 处理识别间隔并更新记录
                 need_insert = False
@@ -99,7 +99,7 @@ class FaceRecognizer:
                 if need_insert:
                     time_local = time.localtime(face_time_dict[predict_name])
                     face_time = time.strftime("%H:%M:%S", time_local)
-                    db.add_attendance(predict_id, predict_name)
+                    self.db.add_attendance(predict_id, predict_name)
                     face_count += 1
 
             # 在画面上绘制结果

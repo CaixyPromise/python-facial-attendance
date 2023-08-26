@@ -11,7 +11,7 @@ def cv2AddChineseText(img, text, position, textColor = (0, 255, 0), textSize = 3
     draw = ImageDraw.Draw(img)
     # 字体的格式
     fontStyle = ImageFont.truetype(
-            "./fonts/songti.ttc", textSize, encoding = "utf-8"
+            "fonts/songti.ttc", textSize, encoding = "utf-8"
             )
     # 绘制文本
     draw.text(position, text, textColor, font = fontStyle)

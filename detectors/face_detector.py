@@ -5,8 +5,8 @@ class FaceDetector:
     def __init__(self, detector_type = 'haar'):
         # 初始化并加载人脸检测器
         self.hog_face_detector = dlib.get_frontal_face_detector()  # 使用HOG特征的检测器
-        self.cnn_detector = dlib.cnn_face_detection_model_v1('../weights/mmod_human_face_detector.dat')  # 使用CNN的检测器
-        self.haar_face_detector = cv2.CascadeClassifier('../weights/haarcascade_frontalface_default.xml')  # 使用Haar特征的检测器
+        self.cnn_detector = dlib.cnn_face_detection_model_v1('weights/mmod_human_face_detector.dat')  # 使用CNN的检测器
+        self.haar_face_detector = cv2.CascadeClassifier('weights/haarcascade_frontalface_default.xml')  # 使用Haar特征的检测器
         self.detector_type = detector_type  # 设置当前使用的检测器类型
 
     def detect_faces(self, frame):

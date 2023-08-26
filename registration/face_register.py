@@ -21,7 +21,7 @@ class FaceRegister:
         self.face_descriptor_extractor = dlib.face_recognition_model_v1(
             './weights/dlib_face_recognition_resnet_model_v1.dat'
             )  # 用于提取人脸特征描述符
-
+        # 初始化检测器
         self.detector = detector  # 设置使用的人脸检测器，可以是hog、cnn或haar
 
     def register(self):
@@ -32,10 +32,6 @@ class FaceRegister:
         show_time = (startTime - 10)
         db = DatabaseHandler()
         user_id = db.add_user(self.userName)
-
-        # Open the CSV file
-        # with open('./data/feature.csv', 'a', newline='') as f:
-        #     csv_writer = csv.writer(f)
 
         # Capture video
         cap = cv2.VideoCapture(0)

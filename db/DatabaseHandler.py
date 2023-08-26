@@ -3,7 +3,7 @@ from face_recognition.utils.singleton import Singleton
 
 @Singleton
 class DatabaseHandler:
-    def __init__(self, db_name = "../data/database"):
+    def __init__(self, db_name = "data/database"):
         # 初始化并连接到指定的数据库
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
@@ -29,7 +29,7 @@ class DatabaseHandler:
                             )
 
         self.cursor.execute("""
-        create table Attendance
+        create table IF NOT EXISTS Attendance
         (
             id        INTEGER
                 primary key autoincrement,
@@ -63,7 +63,8 @@ class DatabaseHandler:
 
     def get_features(self):
         # 获取所有的人脸特征
-        self.cursor.execute("SELECT userId, feature FROM Features")
+        self.cursor.execute("SELECT Users.id, Users.name, Features.feature"
+                            " FROM Features, Users")
         return self.cursor.fetchall()
 
     def close(self):
