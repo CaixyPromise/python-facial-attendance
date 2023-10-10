@@ -3,7 +3,7 @@ import cv2
 import time
 from utils.putChineseText import cv2AddChineseText
 from db.DatabaseHandler import DatabaseHandler
-import csv
+
 class FaceRegister:
     def __init__(self, detector, faceId = 1, userName = 'default', interval = 3, faceCount = 3, resize_w = 700,
                  resize_h = 400

@@ -50,7 +50,7 @@ class FaceAttendanceSystem:
 
     def run(self, video_src = 0):
         if self.mode == 'reg':  # 注册人脸
-            self.register.register()
+            self.register()
         elif self.mode == 'recog': # 识别人脸
             self.recognition(video_src)
         else:
@@ -59,6 +59,6 @@ class FaceAttendanceSystem:
 # 创建系统实例并运行
 # 先注册，后运行，否则系统会停止
 if __name__ == '__main__':
-    system = FaceAttendanceSystem(mode='recog', detector='haar', faceId=1, userName='John')
+    system = FaceAttendanceSystem(mode='reg', detector='haar', faceId=1, userName='John')
     system.run()
 
